@@ -137,6 +137,11 @@ public class Main {
     }
 
     private void searchArtistDetails() {
-        // Implementaremos no próximo passo
+        System.out.println("Search details for which artist? ");
+        var artistName = scanner.nextLine();
+
+        var details = br.com.alura.screensound.service.WikipediaQueryService.getArtistDetails(artistName);
+        System.out.println("\n--- Artist Information ---");
+        System.out.println(details);
     }
 }
