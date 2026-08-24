@@ -2,8 +2,11 @@ package br.com.alura.screensound.main;
 
 import br.com.alura.screensound.model.Artist;
 import br.com.alura.screensound.model.ArtistType;
+import br.com.alura.screensound.model.Song;
 import br.com.alura.screensound.repository.ArtistRepository;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -79,11 +82,44 @@ public class Main {
     }
 
     private void registerSong() {
-        // Implementaremos no próximo passo
+        System.out.println("Register song for which artist? ");
+        var artistName = scanner.nextLine();
+
+        Optional<Artist> optionalArtist = repository.findByNameContainingIgnoreCase(artistName);
+
+        if (optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+
+            System.out.println("Enter song title: ");
+            var title = scanner.nextLine();
+
+            System.out.println("Enter album name: ");
+            var album = scanner.nextLine();
+
+            Song song = new Song(title, album, artist);
+            artist.getSongs().add(song);
+            repository.save(artist);
+
+            System.out.println("Song '" + title + "' registered successfully for artist '" + artist.getName() + "'!");
+        } else {
+            System.out.println("Artist not found with name: " + artistName);
+        }
     }
 
     private void listSongs() {
-        // Implementaremos no próximo passo
+        List<Artist> artists = repository.findAll();
+
+        if (artists.isEmpty()) {
+            System.out.println("No artists or songs registered yet.");
+            return;
+        }
+
+        System.out.println("\n--- All Registered Songs ---");
+        artists.forEach(artist ->
+                artist.getSongs().forEach(song ->
+                        System.out.println("Artist: " + artist.getName() + " | " + song)
+                )
+        );
     }
 
     private void searchSongsByArtist() {
