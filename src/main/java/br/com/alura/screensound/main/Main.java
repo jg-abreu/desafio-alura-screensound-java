@@ -123,7 +123,17 @@ public class Main {
     }
 
     private void searchSongsByArtist() {
-        // Implementaremos no próximo passo
+        System.out.println("Search songs for which artist? ");
+        var artistName = scanner.nextLine();
+
+        List<Song> songs = repository.findSongsByArtistName(artistName);
+
+        if (songs.isEmpty()) {
+            System.out.println("No songs found for artist: " + artistName);
+        } else {
+            System.out.println("\n--- Songs Found ---");
+            songs.forEach(System.out::println);
+        }
     }
 
     private void searchArtistDetails() {
